@@ -2,7 +2,7 @@ const config = require("./config.json");
 const token = require("./token.json");
 const Discord = require("discord.js");
 const fs = require("fs");
-const bot = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES",  "GUILD_MEMBERS"] });
+const bot = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES",  "GUILD_MEMBERS", "GUILD_MESSAGE_REACTIONS"], partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 bot.commands = new Discord.Collection();
 
 
@@ -62,6 +62,16 @@ bot.on("messageCreate", async message => {
 
     message.delete();
 });
+
+bot.on('messageReactionAdd', (reaction, user) => {
+    console.log(reaction)
+    if (reaction.me) return;
+    //if (reaction. === '✅') {
+    //    console.log("test")
+    //    reaction.message.delete();
+    //}
+
+  });
 
 //Token needed in token.json
 bot.login(token.token);

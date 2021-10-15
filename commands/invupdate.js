@@ -15,7 +15,7 @@ module.exports.run = async (bot, message, args) => {
         return;
     }
     if (!storeNames.includes(storeName)) return;
-    
+
     let invMessages = bot.channels.cache.find(c => c.name === "inv-" + storeName).messages;
     let fetched;
     do {
@@ -46,11 +46,12 @@ module.exports.run = async (bot, message, args) => {
                     } else if (label.name === 'Inventory') {
                         embedMessage.react('ℹ️');
                     }
+
                 });
+                embedMessage.react('✅');
             });
         });
     });
-    
 }
 
 
