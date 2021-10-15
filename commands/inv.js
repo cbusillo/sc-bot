@@ -7,6 +7,11 @@ trello.setOauthToken(token.oauthToken);
 
 module.exports.run = async (bot, message, args) => {
     let messageArray = message.content.split(" ");
+    if (messageArray.length === 1) {
+        message.channel.send('Please use the following syntax:\n .inv store qty request ".inv vb 5 pumpkins." ');
+        
+        return;
+    }
     let store;
     //let cmd = messageArray[0];
     //let args = messageArray.slice(1);

@@ -60,6 +60,7 @@ bot.on("messageCreate", async message => {
     let commandfile = bot.commands.get(cmd.slice(prefix.length));
     if(commandfile) commandfile.run(bot,message,args);
 
+    message.delete();
 });
 
 //Token needed in token.json
