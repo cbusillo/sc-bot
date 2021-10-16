@@ -30,9 +30,11 @@ bot.on('raw', async event => {
 	//const channel = bot.channels.get(data.channel_id) || await user.createDM();
 	const channel = bot.channels.cache.get(data.channel_id) || await user.createDM();
 
-	if (channel.messages.has(data.message_id)) return;
+	//if (channel.messages.has(data.message_id)) return;
+	if (channel.cache.get(data.message_id)) return;
 
-	const message = await channel.fetchMessage(data.message_id);
+	//const message = await channel.fetchMessage(data.message_id);
+	const message = await channel.messages.fetch();
 	const emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
 	const reaction = message.reactions.get(emojiKey);
 
