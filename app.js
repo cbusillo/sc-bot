@@ -27,7 +27,8 @@ bot.on('raw', async event => {
 
 	const { d: data } = event;
 	const user = bot.users.cache.get(data.user_id); //.users.get(data.user_id);
-	const channel = bot.channels.get(data.channel_id) || await user.createDM();
+	//const channel = bot.channels.get(data.channel_id) || await user.createDM();
+	const channel = bot.channels.cache.get(data.channel_id) || await user.createDM();
 
 	if (channel.messages.has(data.message_id)) return;
 
