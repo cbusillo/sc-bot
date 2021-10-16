@@ -26,7 +26,7 @@ client.on('raw', async event => {
 	if (!events.hasOwnProperty(event.t)) return;
 
 	const { d: data } = event;
-	const user = bot.users.get(data.user_id);
+	const user = bot.users.cache.get(data.user_id); //.users.get(data.user_id);
 	const channel = bot.channels.get(data.channel_id) || await user.createDM();
 
 	if (channel.messages.has(data.message_id)) return;
