@@ -2,13 +2,11 @@ const config = require("./config.json");
 const token = require("./token.json");
 const Discord = require("discord.js");
 const fs = require("fs");
-//const bot = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES",  "GUILD_MEMBERS", "GUILD_MESSAGE_REACTIONS"], partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 const bot = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES",  "GUILD_MEMBERS", "GUILD_MESSAGE_REACTIONS"], partials: ["REACTION", "MESSAGE", "USER"] });
 bot.commands = new Discord.Collection();
 
 var Trello = require("trello");
 var trello = new Trello(token.apiKey, token.oauthToken);
-
 
 const commandFiles = fs.readdirSync('./commands/').filter(f => f.endsWith('.js'))
 for (const file of commandFiles) {
@@ -22,28 +20,6 @@ const events = {
 	MESSAGE_REACTION_ADD: 'messageReactionAdd',
 	MESSAGE_REACTION_REMOVE: 'messageReactionRemove',
 };
-
-//fix for caching messages 
-/*
-bot.on('raw', async event => {
-	if (!events.hasOwnProperty(event.t)) return;
-
-	const { d: data } = event;
-	const user = bot.users.cache.get(data.user_id); //.users.get(data.user_id);
-	//const channel = bot.channels.get(data.channel_id) || await user.createDM();
-	const channel = bot.channels.cache.get(data.channel_id) || await user.createDM();
-
-	//if (channel.messages.has(data.message_id)) return;
-	if (channel.cache.get(data.message_id)) return;
-
-	//const message = await channel.fetchMessage(data.message_id);
-	const message = await channel.messages.fetch();
-	const emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
-	const reaction = message.reactions.get(emojiKey);
-
-	bot.emit(events[event.t], reaction, user);
-});
-*/
 
 //When a member join add a role called Member to them and welcome them in a channel welcome
 bot.on('guildMemberAdd', member => {
@@ -107,13 +83,11 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 	}
 
 	// Now the message has been cached and is fully available
-	//console.log(`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction!`);
-	// The reaction is now also fully available and the properties will be reflected accurately:
-	//console.log(`${reaction.count} user(s) have given the same reaction to this message!`);
-	if (reaction.me) return;
-	if (reaction.emoji.name === '✅') {
-        console.log("checkbox reaction")
-	    reaction.message.delete();
+	if (reaction.me) return;	// if it was the bot that reacted bail...
+	
+	if (reaction.emoji.name === '✅') {        
+		console.log("checkbox reaction")
+	    	reaction.message.delete();
 	}
 });
 
