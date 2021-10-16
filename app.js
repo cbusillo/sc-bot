@@ -5,6 +5,7 @@ const fs = require("fs");
 const bot = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES",  "GUILD_MEMBERS", "GUILD_MESSAGE_REACTIONS"], partials: ["REACTION", "MESSAGE", "USER"] });
 bot.commands = new Discord.Collection();
 
+
 var Trello = require("trello");
 var trello = new Trello(token.apiKey, token.oauthToken);
 
