@@ -94,14 +94,6 @@ bot.on("messageCreate", async message => {
 });
 
 bot.on('messageReactionAdd', async (reaction, user) => {
-/*    console.log(reaction)
-    if (reaction.me) return;
-    if (reaction === '✅') {
-        console.log("checkbox checkmark")
-    //    reaction.message.delete();
-    }
-*/
-	
 	// When a reaction is received, check if the structure is partial
 	if (reaction.partial) {
 		// If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
@@ -118,12 +110,11 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 	//console.log(`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction!`);
 	// The reaction is now also fully available and the properties will be reflected accurately:
 	//console.log(`${reaction.count} user(s) have given the same reaction to this message!`);
-	console.log(`${reaction.emoji.name});
 	if (reaction.me) return;
-	    if (reaction.emoji.name == '✅') {
-            console.log("checkbox reaction")
-		    
-	    }
+	if (reaction.emoji.name == '✅') {
+        console.log("checkbox reaction")
+	    reaction.message.delete();
+	}
 });
 
 //Token needed in token.json
