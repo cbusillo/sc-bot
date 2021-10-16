@@ -26,8 +26,8 @@ client.on('raw', async event => {
 	if (!events.hasOwnProperty(event.t)) return;
 
 	const { d: data } = event;
-	const user = client.users.get(data.user_id);
-	const channel = client.channels.get(data.channel_id) || await user.createDM();
+	const user = bot.users.get(data.user_id);
+	const channel = bot.channels.get(data.channel_id) || await user.createDM();
 
 	if (channel.messages.has(data.message_id)) return;
 
@@ -35,7 +35,7 @@ client.on('raw', async event => {
 	const emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
 	const reaction = message.reactions.get(emojiKey);
 
-	client.emit(events[event.t], reaction, user);
+	bot.emit(events[event.t], reaction, user);
 });
 
 //When a member join add a role called Member to them and welcome them in a channel welcome
