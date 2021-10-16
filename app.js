@@ -15,6 +15,29 @@ for (const file of commandFiles) {
     bot.commands.set(props.help.name, props)
 }
 
+//define events we are interested in.
+const events = {
+	MESSAGE_REACTION_ADD: 'messageReactionAdd',
+	MESSAGE_REACTION_REMOVE: 'messageReactionRemove',
+};
+
+//fix for caching messages
+client.on('raw', async event => {
+	if (!events.hasOwnProperty(event.t)) return;
+
+	const { d: data } = event;
+	const user = client.users.get(data.user_id);
+	const channel = client.channels.get(data.channel_id) || await user.createDM();
+
+	if (channel.messages.has(data.message_id)) return;
+
+	const message = await channel.fetchMessage(data.message_id);
+	const emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
+	const reaction = message.reactions.get(emojiKey);
+
+	client.emit(events[event.t], reaction, user);
+});
+
 //When a member join add a role called Member to them and welcome them in a channel welcome
 bot.on('guildMemberAdd', member => {
     //Log the newly joined member to console
@@ -66,10 +89,10 @@ bot.on("messageCreate", async message => {
 bot.on('messageReactionAdd', (reaction, user) => {
     console.log(reaction)
     if (reaction.me) return;
-    //if (reaction. === '✅') {
-    //    console.log("test")
+    if (reaction. === '✅') {
+        console.log("checkbox checkmark")
     //    reaction.message.delete();
-    //}
+    }
 
   });
 
