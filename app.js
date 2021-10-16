@@ -6,7 +6,8 @@ const fs = require("fs");
 const bot = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES",  "GUILD_MEMBERS", "GUILD_MESSAGE_REACTIONS"], partials: ["REACTION", "MESSAGE", "USER"] });
 bot.commands = new Discord.Collection();
 
-
+var Trello = require("trello");
+var trello = new Trello(token.apiKey, token.oauthToken);
 
 
 const commandFiles = fs.readdirSync('./commands/').filter(f => f.endsWith('.js'))
@@ -121,6 +122,7 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 	    if (reaction.emoji.name === '✅') {
             console.log("checkbox reaction")
 		    reaction.message.delete();
+
 	    }
 });
 
