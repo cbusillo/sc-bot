@@ -31,12 +31,12 @@ bot.on('guildMemberAdd', member => {
     bot.channels.cache.find(c => c.name === "general").send('Welcome '+ member.user.username)
 
     //Find a role called Member
-    //let role = member.guild.roles.cache.find(r => r.name === 'Member');
+    let role = member.guild.roles.cache.find(r => r.name === 'Member');
 
     //After 10 seconds add the member role to new user
-    //setTimeout(function(){
-    //    member.roles.add(role);
-    //}, 10000);
+    setTimeout(function(){
+        member.roles.add(role);
+    }, 10000);
 });
 
 //Playing Message
