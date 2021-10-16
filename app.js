@@ -92,7 +92,7 @@ bot.on("messageCreate", async message => {
     message.delete();
 });
 
-bot.on('messageReactionAdd', (reaction, user) => {
+bot.on('messageReactionAdd', async (reaction, user) => {
 /*    console.log(reaction)
     if (reaction.me) return;
     if (reaction === '✅') {
