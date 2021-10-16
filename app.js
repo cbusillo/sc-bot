@@ -22,7 +22,7 @@ const events = {
 };
 
 //fix for caching messages
-client.on('raw', async event => {
+bot.on('raw', async event => {
 	if (!events.hasOwnProperty(event.t)) return;
 
 	const { d: data } = event;
@@ -89,7 +89,7 @@ bot.on("messageCreate", async message => {
 bot.on('messageReactionAdd', (reaction, user) => {
     console.log(reaction)
     if (reaction.me) return;
-    if (reaction. === '✅') {
+    if (reaction === '✅') {
         console.log("checkbox checkmark")
     //    reaction.message.delete();
     }
