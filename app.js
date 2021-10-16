@@ -117,10 +117,10 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 	//console.log(`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction!`);
 	// The reaction is now also fully available and the properties will be reflected accurately:
 	//console.log(`${reaction.count} user(s) have given the same reaction to this message!`);
-	
 	if (reaction.me) return;
-	    if (reaction === '✅') {
-		console.log("checkbox checkmark")
+	    if (reaction.emoji.name === '✅') {
+            console.log("checkbox reaction")
+		    reaction.message.delete();
 	    }
 });
 
