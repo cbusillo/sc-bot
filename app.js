@@ -2,7 +2,8 @@ const config = require("./config.json");
 const token = require("./token.json");
 const Discord = require("discord.js");
 const fs = require("fs");
-const bot = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES",  "GUILD_MEMBERS", "GUILD_MESSAGE_REACTIONS"], partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
+//const bot = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES",  "GUILD_MEMBERS", "GUILD_MESSAGE_REACTIONS"], partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
+const bot = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES",  "GUILD_MEMBERS", "GUILD_MESSAGE_REACTIONS"], partials: ["REACTION", "MESSAGE", "USER"] });
 bot.commands = new Discord.Collection();
 
 
@@ -21,7 +22,8 @@ const events = {
 	MESSAGE_REACTION_REMOVE: 'messageReactionRemove',
 };
 
-//fix for caching messages
+//fix for caching messages 
+/*
 bot.on('raw', async event => {
 	if (!events.hasOwnProperty(event.t)) return;
 
@@ -40,6 +42,7 @@ bot.on('raw', async event => {
 
 	bot.emit(events[event.t], reaction, user);
 });
+*/
 
 //When a member join add a role called Member to them and welcome them in a channel welcome
 bot.on('guildMemberAdd', member => {
@@ -90,14 +93,36 @@ bot.on("messageCreate", async message => {
 });
 
 bot.on('messageReactionAdd', (reaction, user) => {
-    console.log(reaction)
+/*    console.log(reaction)
     if (reaction.me) return;
     if (reaction === '✅') {
         console.log("checkbox checkmark")
     //    reaction.message.delete();
     }
+*/
+	
+	// When a reaction is received, check if the structure is partial
+	if (reaction.partial) {
+		// If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
+		try {
+			await reaction.fetch();
+		} catch (error) {
+			console.error('Something went wrong when fetching the message:', error);
+			// Return as `reaction.message.author` may be undefined/null
+			return;
+		}
+	}
 
-  });
+	// Now the message has been cached and is fully available
+	//console.log(`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction!`);
+	// The reaction is now also fully available and the properties will be reflected accurately:
+	//console.log(`${reaction.count} user(s) have given the same reaction to this message!`);
+	
+	if (reaction.me) return;
+	    if (reaction === '✅') {
+		console.log("checkbox checkmark")
+	    }
+});
 
 //Token needed in token.json
 bot.login(token.token);
